@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "tahweel"
+version = "0.0.1"
+description = "تحويل ملفات PDF إلى Word و TXT"
+authors = ["EasyBooks <easybooksdev@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "tahweel" }]
+keywords = ["tahweel", "ocr", "pdf", "word", "txt"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+homepage = "https://tahweel.ieasybooks.com"
+repository = "https://github.com/ieasybooks/tahweel"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+
+[tool.poetry.scripts]
+tahweel = "tahweel.cli:main"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.7.1"
+
+[tool.autopep8]
+max-line-length = 120
+indent-size = 2
+ignore = ["E121"]
+
+[tool.isort]
+line_length = 120
+src_paths = ["tahweel"]
+lines_between_types = 1
+lines_after_imports = 2
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
