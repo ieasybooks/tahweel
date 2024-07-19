@@ -1,19 +1,27 @@
 from io import BytesIO
 from pathlib import Path
 
+import httplib2
+
 from google.oauth2.service_account import Credentials
+from google_auth_httplib2 import AuthorizedHttp
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
+from googleapiclient.http import HttpRequest, MediaFileUpload, MediaIoBaseDownload
 
 
 class GoogleDriveOcrProcessor:
   def __init__(self, service_account_credentials: Path):
+    self._credentials = Credentials.from_service_account_file(
+      service_account_credentials,
+      scopes=['https://www.googleapis.com/auth/drive'],
+    )
+
     self._drive_service = build(
       'drive',
       'v3',
-      credentials=Credentials.from_service_account_file(service_account_credentials),
-      cache_discovery=False,
-    )
+      requestBuilder=self._build_request,
+      http=AuthorizedHttp(self._credentials, http=httplib2.Http()),
+    )  # type: ignore
 
   def process(self, file_path: Path) -> str:
     file_id = self._upload_file(file_path)
@@ -43,3 +51,6 @@ class GoogleDriveOcrProcessor:
 
   def _delete_file(self, file_id: str) -> None:
     self._drive_service.files().delete(fileId=file_id).execute()
+
+  def _build_request(self, _http, *args, **kwargs) -> HttpRequest:
+    return HttpRequest(AuthorizedHttp(self._credentials, http=httplib2.Http()), *args, **kwargs)

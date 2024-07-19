@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import platformdirs
@@ -31,20 +32,18 @@ def prepare_package_dirs() -> None:
   Path(platformdirs.user_cache_dir('Tahweel')).mkdir(parents=True, exist_ok=True)
 
 
-def process_file(
-  args: TahweelArgumentParser,
-  processor: GoogleDriveOcrProcessor,
-  pdf_file_manager: PdfFileManager,
-) -> None:
-  if pdf_file_manager.already_processed(args.tahweel_type, args.file_or_dir_path):
+def process_file(args: TahweelArgumentParser, processor: GoogleDriveOcrProcessor, file_manager: PdfFileManager) -> None:
+  if file_manager.already_processed(args.tahweel_type, args.file_or_dir_path):
     return
 
-  pdf_file_manager.to_images()
+  file_manager.to_images()
 
-  ocred_pages = list(map(processor.process, pdf_file_manager.images_paths))
+  with ThreadPoolExecutor(max_workers=args.processor_max_workers) as executor:
+    ocred_pages = list(executor.map(processor.process, file_manager.images_paths))
+
   ocred_pages = list(map(lambda text: text.replace('﻿________________', ''), ocred_pages))
   ocred_pages = list(map(lambda text: text.replace('﻿', ''), ocred_pages))
   ocred_pages = list(map(str.strip, ocred_pages))
 
-  TxtWriter(pdf_file_manager.txt_file_path(args.tahweel_type, args.file_or_dir_path)).write(ocred_pages)
-  DocxWriter(pdf_file_manager.docx_file_path(args.tahweel_type, args.file_or_dir_path)).write(ocred_pages)
+  TxtWriter(file_manager.txt_file_path(args.tahweel_type, args.file_or_dir_path)).write(ocred_pages)
+  DocxWriter(file_manager.docx_file_path(args.tahweel_type, args.file_or_dir_path)).write(ocred_pages)
