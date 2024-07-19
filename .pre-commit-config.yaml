@@ -38,3 +38,5 @@ repos:
     rev: v1.10.0
     hooks:
       - id: mypy
+        additional_dependencies:
+          - google-api-python-client-stubs

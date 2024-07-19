@@ -31,6 +31,7 @@ google-auth-oauthlib = "^1.2.1"
 pdf2image = "^1.17.0"
 platformdirs = "^4.2.2"
 tqdm = "^4.66.4"
+google-api-python-client-stubs = "^1.26.0"
 
 [tool.poetry.scripts]
 tahweel = "tahweel.cli:main"
