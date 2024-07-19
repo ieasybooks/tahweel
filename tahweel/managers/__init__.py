@@ -1,4 +1,4 @@
-__all__ = ['PdfManager']
+__all__ = ['PdfFileManager']
 
 
-from tahweel.managers.pdf_manager import PdfManager
+from tahweel.managers.pdf_file_manager import PdfFileManager
