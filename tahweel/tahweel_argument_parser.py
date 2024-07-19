@@ -10,6 +10,7 @@ from tahweel.enums import TahweelType
 class TahweelArgumentParser(Tap):
   file_or_dir_path: Path
   service_account_credentials: Path
+  pdf2image_thread_count: int = 8
 
   tahweel_type: TahweelType = TahweelType.FILE
   """Don't use this argument, it will be auto-set based on file_or_dir_path."""
