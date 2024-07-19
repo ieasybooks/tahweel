@@ -9,9 +9,16 @@ from tahweel.enums import TahweelType
 
 class TahweelArgumentParser(Tap):
   file_or_dir_path: Path
+  """Path to the file or directory to be processed."""
+
   service_account_credentials: Path
+  """Path to the service account credentials JSON file."""
+
   pdf2image_thread_count: int = 8
+  """Number of threads to use for PDF to image conversion using `pdf2image` package."""
+
   processor_max_workers: int = 8
+  """Number of threads to use while performing OCR on PDF pages."""
 
   skip_output_check: bool = False
   """Use this flag in development only to skip the output check."""
