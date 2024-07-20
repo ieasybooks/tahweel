@@ -56,5 +56,9 @@ def process_file(args: TahweelArgumentParser, processor: GoogleDriveOcrProcessor
   content = list(map(lambda text: text.replace('\ufeff', ''), content))
   content = list(map(str.strip, content))
 
-  TxtWriter(file_manager.txt_file_path(args.tahweel_type, args.dir_output_type, args.file_or_dir_path)).write(content)
+  TxtWriter(file_manager.txt_file_path(args.tahweel_type, args.dir_output_type, args.file_or_dir_path)).write(
+    content,
+    args.txt_page_separator,
+  )
+
   DocxWriter(file_manager.docx_file_path(args.tahweel_type, args.dir_output_type, args.file_or_dir_path)).write(content)
