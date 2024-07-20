@@ -39,17 +39,22 @@ tahweel = "tahweel.cli:main"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.7.1"
+ruff = "^0.5.3"
 
-[tool.autopep8]
-max-line-length = 120
-indent-size = 2
-ignore = ["E121"]
+[tool.ruff]
+fix = true
+indent-width = 2
+line-length = 120
+src = ["tahweel"]
+target-version = "py310"
 
-[tool.isort]
-line_length = 120
-src_paths = ["tahweel"]
-lines_between_types = 1
-lines_after_imports = 2
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+
+[tool.ruff.lint.isort]
+lines-between-types = 1
+lines-after-imports = 2
 
 [build-system]
 requires = ["poetry-core"]

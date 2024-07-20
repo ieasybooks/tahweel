@@ -33,8 +33,9 @@ def prepare_package_dirs() -> None:
 
 
 def process_file(args: TahweelArgumentParser, processor: GoogleDriveOcrProcessor, file_manager: PdfFileManager) -> None:
-  if (not args.skip_output_check and
-          file_manager.output_exists(args.tahweel_type, args.dir_output_type, args.file_or_dir_path)):
+  if not args.skip_output_check and file_manager.output_exists(
+    args.tahweel_type, args.dir_output_type, args.file_or_dir_path
+  ):
     return
 
   file_manager.to_images()

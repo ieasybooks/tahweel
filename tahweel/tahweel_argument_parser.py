@@ -36,8 +36,8 @@ class TahweelArgumentParser(Tap):
       default=DirOutputType.TREE_TO_TREE,
       choices=list(DirOutputType),
       help='Use this argument when processing a directory. '
-           '`tree_to_tree` means the output will be in a new directory beside the input directory with the same structure, '
-           'while `side_by_side` means the output will be in the same input directory beside each file.',
+      '`tree_to_tree` means the output will be in a new directory beside the input directory with the same structure, '
+      'while `side_by_side` means the output will be in the same input directory beside each file.',
     )
 
     self.add_argument(

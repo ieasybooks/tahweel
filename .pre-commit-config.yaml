@@ -25,15 +25,12 @@ repos:
         args: [--pytest-test-first]
       - id: trailing-whitespace
         types: [python]
-  - repo: https://github.com/hhatto/autopep8
-    rev: v2.2.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.3
     hooks:
-      - id: autopep8
-        args: ['-i', '--max-line-length=120', '--indent-size=2', '--ignore=E121']
-  - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
+      - id: ruff
+        args: [ --fix ]
+      - id: ruff-format
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.10.0
     hooks:

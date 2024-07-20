@@ -36,19 +36,23 @@
         "workbench": {
           "iconTheme": "vscode-icons"
         },
-        "editor": {
-          "formatOnSave": true,
-          "rulers": [80, 120],
-          "codeActionsOnSave": {
-            "source.organizeImports": true
+        "[python]": {
+          "editor": {
+            "formatOnSave": true,
+            "rulers": [80, 120],
+            "defaultFormatter": "charliermarsh.ruff",
+            "codeActionsOnSave": {
+              "source.fixAll": "always",
+              "source.organizeImports": "always"
+            }
           }
         }
       },
       "extensions": [
         "KevinRose.vsc-python-indent",
+        "charliermarsh.ruff",
         "eamodio.gitlens",
         "ms-python.debugpy",
-        "ms-python.isort",
         "ms-python.mypy-type-checker",
         "ms-python.python",
         "ms-python.vscode-pylance",

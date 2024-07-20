@@ -24,14 +24,19 @@ class PdfFileManager:
     return pdf2image.pdfinfo_from_path(self.file_path)['Pages']
 
   def to_images(self) -> None:
-    self.images_paths = list(map(lambda path: Path(path), pdf2image.convert_from_path(
-      self.file_path,
-      output_folder=platformdirs.user_cache_dir('Tahweel'),
-      fmt='jpeg',
-      jpegopt={'quality': 100, 'progressive': True, 'optimize': True},
-      thread_count=self.pdf2image_thread_count,
-      paths_only=True,
-    )))
+    self.images_paths = list(
+      map(
+        lambda path: Path(path),
+        pdf2image.convert_from_path(
+          self.file_path,
+          output_folder=platformdirs.user_cache_dir('Tahweel'),
+          fmt='jpeg',
+          jpegopt={'quality': 100, 'progressive': True, 'optimize': True},
+          thread_count=self.pdf2image_thread_count,
+          paths_only=True,
+        ),
+      )
+    )
 
     for path in self.images_paths:
       if path.stat().st_size > MAX_FILE_SIZE_IN_BYTES:
@@ -42,8 +47,10 @@ class PdfFileManager:
         )
 
   def output_exists(self, tahweel_type: TahweelType, dir_output_type: DirOutputType, dir: Path | None = None) -> bool:
-    return (self.txt_file_path(tahweel_type, dir_output_type, dir).exists() and
-            self.docx_file_path(tahweel_type, dir_output_type, dir).exists())
+    return (
+      self.txt_file_path(tahweel_type, dir_output_type, dir).exists()
+      and self.docx_file_path(tahweel_type, dir_output_type, dir).exists()
+    )
 
   def txt_file_path(self, tahweel_type: TahweelType, dir_output_type: DirOutputType, dir: Path | None = None) -> Path:
     return self._output_file_path('.txt', tahweel_type, dir_output_type, dir)
@@ -67,7 +74,8 @@ class PdfFileManager:
 
         if dir is None:
           raise ValueError(
-            '`dir` is required when `tahweel_type` is `TahweelType.DIR` and `dir_output_type` is `DirOutputType.TREE_TO_TREE`')
+            '`dir` is required when `tahweel_type` is `TahweelType.DIR` and `dir_output_type` is `DirOutputType.TREE_TO_TREE`'
+          )
 
         match suffix:
           case '.txt':

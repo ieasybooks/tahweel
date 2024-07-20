@@ -31,10 +31,15 @@ class GoogleDriveOcrProcessor:
     return download_buffer.getvalue().decode('utf-8')
 
   def _upload_file(self, file_path: Path) -> str:
-    return str(self._drive_service.files().create(
-      body={'name': file_path.name, 'mimeType': 'application/vnd.google-apps.document'},
-      media_body=MediaFileUpload(file_path, mimetype='image/jpeg'),
-    ).execute().get('id'))
+    return str(
+      self._drive_service.files()
+      .create(
+        body={'name': file_path.name, 'mimeType': 'application/vnd.google-apps.document'},
+        media_body=MediaFileUpload(file_path, mimetype='image/jpeg'),
+      )
+      .execute()
+      .get('id')
+    )
 
   def _download_file(self, file_id: str) -> BytesIO:
     download_buffer = BytesIO()
