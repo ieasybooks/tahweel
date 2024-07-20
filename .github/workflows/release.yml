@@ -11,12 +11,16 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: 3.12
-      - run: python -m pip install build twine && python -m build
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Build package
+        run: python -m pip install build twine && python -m build
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
   call-docker-publish-workflow:
     needs: build-and-publish
     permissions:
