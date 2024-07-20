@@ -48,7 +48,7 @@ def process_file(args: TahweelArgumentParser, processor: GoogleDriveOcrProcessor
       tqdm(
         executor.map(processor.process, file_manager.images_paths),
         total=file_manager.pages_count(),
-        desc=f'Pages ({truncate(str(file_manager.file_path), 50)})',
+        desc=f'Pages ({truncate(str(file_manager.file_path), 50, from_end=True)})',
       ),
     )
 
