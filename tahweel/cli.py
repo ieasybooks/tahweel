@@ -3,10 +3,13 @@ from pathlib import Path
 
 import platformdirs
 
+from tqdm import tqdm
+
 from tahweel import TahweelArgumentParser
 from tahweel.enums import TahweelType
 from tahweel.managers import PdfFileManager
 from tahweel.processors import GoogleDriveOcrProcessor
+from tahweel.utils.string_utils import truncate
 from tahweel.writers import DocxWriter, TxtWriter
 
 
@@ -18,14 +21,14 @@ def main() -> None:
 
   match args.tahweel_type:
     case TahweelType.FILE:
-      pdf_file_manager = PdfFileManager(args.file_or_dir_path, args.pdf2image_thread_count)
-
-      process_file(args, processor, pdf_file_manager)
+      pdf_file_paths = [args.file_or_dir_path]
     case TahweelType.DIR:
-      for pdf_file_path in args.file_or_dir_path.rglob('*.pdf'):
-        pdf_file_manager = PdfFileManager(pdf_file_path, args.pdf2image_thread_count)
+      pdf_file_paths = list(args.file_or_dir_path.rglob('*.pdf'))
 
-        process_file(args, processor, pdf_file_manager)
+  for pdf_file_path in tqdm(pdf_file_paths, desc='Files'):
+    pdf_file_manager = PdfFileManager(pdf_file_path, args.pdf2image_thread_count)
+
+    process_file(args, processor, pdf_file_manager)
 
 
 def prepare_package_dirs() -> None:
@@ -41,7 +44,13 @@ def process_file(args: TahweelArgumentParser, processor: GoogleDriveOcrProcessor
   file_manager.to_images()
 
   with ThreadPoolExecutor(max_workers=args.processor_max_workers) as executor:
-    content = list(executor.map(processor.process, file_manager.images_paths))
+    content = list(
+      tqdm(
+        executor.map(processor.process, file_manager.images_paths),
+        total=file_manager.pages_count(),
+        desc=f'Pages ({truncate(str(file_manager.file_path), 50)})',
+      ),
+    )
 
   content = list(map(lambda text: text.replace('\ufeff________________', ''), content))
   content = list(map(lambda text: text.replace('\ufeff', ''), content))
