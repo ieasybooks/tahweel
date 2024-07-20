@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tahweel"
-version = "0.0.2"
+version = "0.0.3"
 description = "تحويل ملفات PDF إلى Word و TXT"
 authors = ["EasyBooks <easybooksdev@gmail.com>"]
 license = "MIT"
