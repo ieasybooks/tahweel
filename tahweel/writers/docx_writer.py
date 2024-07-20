@@ -20,7 +20,7 @@ class DocxWriter:
 
     for index, text in enumerate(texts):
       paragraph = document.add_paragraph()
-      run = paragraph.add_run(text.replace('\n', ' ').translate(NORMALIZE_NUMBERS))
+      run = paragraph.add_run(text.replace('\n', ' ').replace('\r', ' ').translate(NORMALIZE_NUMBERS))
 
       paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
       run.style = allow_rtl
