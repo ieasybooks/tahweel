@@ -6,11 +6,19 @@ import platformdirs
 from tqdm import tqdm
 
 from tahweel import TahweelArgumentParser
-from tahweel.enums import TahweelType
+from tahweel.enums import TahweelType, TransformationType
 from tahweel.managers import PdfFileManager
+from tahweel.models import Transformation
 from tahweel.processors import GoogleDriveOcrProcessor
-from tahweel.utils.string_utils import truncate
+from tahweel.utils.string_utils import apply_transformations, truncate
 from tahweel.writers import DocxWriter, TxtWriter
+
+
+TRANSFORMATIONS = [
+  Transformation(TransformationType.REPLACE, '\ufeff________________', ''),
+  Transformation(TransformationType.REPLACE, '\ufeff', ''),
+  Transformation(TransformationType.FUNCTION, str.strip),
+]
 
 
 def main() -> None:
@@ -52,9 +60,7 @@ def process_file(args: TahweelArgumentParser, processor: GoogleDriveOcrProcessor
       ),
     )
 
-  content = list(map(lambda text: text.replace('\ufeff________________', ''), content))
-  content = list(map(lambda text: text.replace('\ufeff', ''), content))
-  content = list(map(str.strip, content))
+  content = list(map(lambda text: apply_transformations(text, TRANSFORMATIONS), content))
 
   TxtWriter(file_manager.txt_file_path(args.tahweel_type, args.dir_output_type, args.file_or_dir_path)).write(
     content,
