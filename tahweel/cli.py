@@ -42,8 +42,8 @@ def process_file(args: TahweelArgumentParser, processor: GoogleDriveOcrProcessor
   with ThreadPoolExecutor(max_workers=args.processor_max_workers) as executor:
     content = list(executor.map(processor.process, file_manager.images_paths))
 
-  content = list(map(lambda text: text.replace('﻿________________', ''), content))
-  content = list(map(lambda text: text.replace('﻿', ''), content))
+  content = list(map(lambda text: text.replace('\ufeff________________', ''), content))
+  content = list(map(lambda text: text.replace('\ufeff', ''), content))
   content = list(map(str.strip, content))
 
   TxtWriter(file_manager.txt_file_path(args.tahweel_type, args.dir_output_type, args.file_or_dir_path)).write(content)
