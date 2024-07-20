@@ -6,7 +6,7 @@ authors = ["EasyBooks <easybooksdev@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [{ include = "tahweel" }]
-keywords = ["tahweel", "ocr", "pdf", "word", "txt"]
+keywords = ["tahweel", "ocr", "pdf", "word", "txt", "google-drive-api"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
