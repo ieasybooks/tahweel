@@ -61,4 +61,7 @@ def process_file(args: TahweelArgumentParser, processor: GoogleDriveOcrProcessor
     args.txt_page_separator,
   )
 
-  DocxWriter(file_manager.docx_file_path(args.tahweel_type, args.dir_output_type, args.file_or_dir_path)).write(content)
+  DocxWriter(file_manager.docx_file_path(args.tahweel_type, args.dir_output_type, args.file_or_dir_path)).write(
+    content,
+    args.docx_remove_newlines,
+  )

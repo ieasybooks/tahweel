@@ -24,6 +24,9 @@ class TahweelArgumentParser(Tap):
   txt_page_separator: str = 'PAGE_SEPARATOR'
   """Separator to use between pages in the output TXT file."""
 
+  docx_remove_newlines: bool = False
+  """Remove newlines from the output DOCX file. Useful if you want DOCX and PDF to have the same page count."""
+
   skip_output_check: bool = False
   """Use this flag in development only to skip the output check."""
 

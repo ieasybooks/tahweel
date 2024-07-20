@@ -14,13 +14,17 @@ class DocxWriter:
 
     self.file_path.parent.mkdir(parents=True, exist_ok=True)
 
-  def write(self, texts: list[str]):
+  def write(self, texts: list[str], remove_newlines: bool):
     document = Document()
     allow_rtl = document.styles.add_style('allow_rtl', WD_STYLE_TYPE.CHARACTER)
 
     for index, text in enumerate(texts):
       paragraph = document.add_paragraph()
-      run = paragraph.add_run(text.replace('\n', ' ').replace('\r', ' ').translate(NORMALIZE_NUMBERS))
+
+      if remove_newlines:
+        text = text.replace('\n', ' ').replace('\r', ' ')
+
+      run = paragraph.add_run(text.translate(NORMALIZE_NUMBERS))
 
       paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
       run.style = allow_rtl
