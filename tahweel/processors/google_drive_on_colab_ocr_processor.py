@@ -1,9 +1,9 @@
 from io import BytesIO
 from pathlib import Path
 
+import google.auth
 import httplib2
 
-from google.oauth2.service_account import Credentials
 from google_auth_httplib2 import AuthorizedHttp
 from googleapiclient.discovery import build
 from googleapiclient.http import HttpRequest, MediaFileUpload, MediaIoBaseDownload
@@ -11,12 +11,9 @@ from googleapiclient.http import HttpRequest, MediaFileUpload, MediaIoBaseDownlo
 from tahweel.processors.base_ocr_processor import BaseOcrProcessor
 
 
-class GoogleDriveOcrProcessor(BaseOcrProcessor):
-  def __init__(self, service_account_credentials: Path):
-    self._credentials = Credentials.from_service_account_file(
-      service_account_credentials,
-      scopes=['https://www.googleapis.com/auth/drive'],
-    )
+class GoogleDriveOnColabOcrProcessor(BaseOcrProcessor):
+  def __init__(self):
+    self._credentials, _ = google.auth.default(scopes=['https://www.googleapis.com/auth/drive'])
 
     self._drive_service = build(
       'drive',
