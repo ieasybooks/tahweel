@@ -1,63 +1,15 @@
-from io import BytesIO
 from pathlib import Path
 
-import httplib2
-
 from google.oauth2.service_account import Credentials
-from google_auth_httplib2 import AuthorizedHttp
-from googleapiclient.discovery import build
-from googleapiclient.http import HttpRequest, MediaFileUpload, MediaIoBaseDownload
 
-from tahweel.processors.base_ocr_processor import BaseOcrProcessor
+from tahweel.processors.google_drive_base_ocr_processor import GoogleDriveBaseOcrProcessor
 
 
-class GoogleDriveOcrProcessor(BaseOcrProcessor):
+class GoogleDriveOcrProcessor(GoogleDriveBaseOcrProcessor):
   def __init__(self, service_account_credentials: Path):
-    self._credentials = Credentials.from_service_account_file(
+    credentials = Credentials.from_service_account_file(
       service_account_credentials,
       scopes=['https://www.googleapis.com/auth/drive'],
     )
 
-    self._drive_service = build(
-      'drive',
-      'v3',
-      requestBuilder=self._build_request,
-      http=AuthorizedHttp(self._credentials, http=httplib2.Http()),
-    )  # type: ignore
-
-  def process(self, file_path: Path) -> str:
-    file_id = self._upload_file(file_path)
-    download_buffer = self._download_file(file_id)
-    self._delete_file(file_id)
-
-    return download_buffer.getvalue().decode('utf-8')
-
-  def _upload_file(self, file_path: Path) -> str:
-    return str(
-      self._drive_service.files()
-      .create(
-        body={'name': file_path.name, 'mimeType': 'application/vnd.google-apps.document'},
-        media_body=MediaFileUpload(file_path, mimetype='image/jpeg'),
-      )
-      .execute()
-      .get('id')
-    )
-
-  def _download_file(self, file_id: str) -> BytesIO:
-    download_buffer = BytesIO()
-    download = MediaIoBaseDownload(
-      download_buffer,
-      self._drive_service.files().export_media(fileId=file_id, mimeType='text/plain'),
-    )
-
-    downloaded = False
-    while downloaded is False:
-      _, downloaded = download.next_chunk()
-
-    return download_buffer
-
-  def _delete_file(self, file_id: str) -> None:
-    self._drive_service.files().delete(fileId=file_id).execute()
-
-  def _build_request(self, _http, *args, **kwargs) -> HttpRequest:
-    return HttpRequest(AuthorizedHttp(self._credentials, http=httplib2.Http()), *args, **kwargs)
+    super().__init__(credentials)
