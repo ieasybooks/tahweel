@@ -1,3 +1,5 @@
+import os
+
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -9,10 +11,12 @@ from tahweel import TahweelArgumentParser
 from tahweel.enums import TahweelType, TransformationType
 from tahweel.managers import PdfFileManager
 from tahweel.models import Transformation
-from tahweel.processors import GoogleDriveOcrProcessor
+from tahweel.processors import BaseOcrProcessor, GoogleDriveOcrProcessor, GoogleDriveOnColabOcrProcessor
 from tahweel.utils.string_utils import apply_transformations, truncate
 from tahweel.writers import DocxWriter, TxtWriter
 
+
+IS_COLAB = 'COLAB_RELEASE_TAG' in os.environ
 
 TRANSFORMATIONS = [
   Transformation(TransformationType.REPLACE, '\ufeff________________', ''),
@@ -23,7 +27,12 @@ TRANSFORMATIONS = [
 
 def main() -> None:
   args = TahweelArgumentParser(underscores_to_dashes=True).parse_args()
-  processor = GoogleDriveOcrProcessor(args.service_account_credentials)
+
+  processor: BaseOcrProcessor
+  if IS_COLAB:
+    processor = GoogleDriveOnColabOcrProcessor()
+  else:
+    processor = GoogleDriveOcrProcessor(args.service_account_credentials)
 
   prepare_package_dirs()
 
@@ -43,7 +52,7 @@ def prepare_package_dirs() -> None:
   Path(platformdirs.user_cache_dir('Tahweel')).mkdir(parents=True, exist_ok=True)
 
 
-def process_file(args: TahweelArgumentParser, processor: GoogleDriveOcrProcessor, file_manager: PdfFileManager) -> None:
+def process_file(args: TahweelArgumentParser, processor: BaseOcrProcessor, file_manager: PdfFileManager) -> None:
   if not args.skip_output_check and file_manager.output_exists(
     args.tahweel_type, args.dir_output_type, args.file_or_dir_path
   ):
