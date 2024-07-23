@@ -42,7 +42,13 @@ class PdfFileManager:
       if path.stat().st_size > MAX_FILE_SIZE_IN_BYTES:
         subprocess.run(
           # https://www.fmwconcepts.com/imagemagick/downsize/index.php.
-          ['./tahweel/downsize.sh', '-s', str(MAX_FILE_SIZE_IN_KILO_BYTES), str(path), str(path)],
+          [
+            str(Path(__file__).parent.parent / 'downsize.sh'),
+            '-s',
+            str(MAX_FILE_SIZE_IN_KILO_BYTES),
+            str(path),
+            str(path),
+          ],
           stdout=subprocess.DEVNULL,
         )
 
