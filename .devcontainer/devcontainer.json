@@ -6,9 +6,6 @@
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-    "ghcr.io/rocker-org/devcontainer-features/apt-packages:latest": {
-      "packages": "bc, imagemagick"
-    },
     "ghcr.io/devcontainers-contrib/features/poppler-utils-apt-get:latest": {},
     "ghcr.io/devcontainers/features/git:latest": {},
     "ghcr.io/jungaretti/features/vim:latest": {},
