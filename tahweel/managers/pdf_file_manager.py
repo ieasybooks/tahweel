@@ -1,15 +1,12 @@
-import subprocess
-
 from pathlib import Path
 
 import pdf2image
 import platformdirs
 
 from tahweel.enums import DirOutputType, TahweelType
+from tahweel.utils.image_utils import compress_image
 
 
-MAX_FILE_SIZE_IN_BYTES = 4900000
-MAX_FILE_SIZE_IN_KILO_BYTES = 4900
 TXT_DIR_SUFFIX = ' - Tahweel TXT'
 DOCX_DIR_SUFFIX = ' - Tahweel DOCX'
 
@@ -39,18 +36,7 @@ class PdfFileManager:
     )
 
     for path in self.images_paths:
-      if path.stat().st_size > MAX_FILE_SIZE_IN_BYTES:
-        subprocess.run(
-          # https://www.fmwconcepts.com/imagemagick/downsize/index.php.
-          [
-            str(Path(__file__).parent.parent / 'downsize.sh'),
-            '-s',
-            str(MAX_FILE_SIZE_IN_KILO_BYTES),
-            str(path),
-            str(path),
-          ],
-          stdout=subprocess.DEVNULL,
-        )
+      compress_image(path)
 
   def output_exists(
     self,
