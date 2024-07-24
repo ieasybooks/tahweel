@@ -45,7 +45,11 @@ def main() -> None:
   for pdf_file_path in tqdm(pdf_file_paths, desc='Files'):
     pdf_file_manager = PdfFileManager(pdf_file_path, args.pdf2image_thread_count)
 
-    process_file(args, processor, pdf_file_manager)
+    try:
+      process_file(args, processor, pdf_file_manager)
+    except Exception:
+      print(f'Failed to process "{pdf_file_manager.file_path}", continuing...')
+      continue
 
 
 def prepare_package_dirs() -> None:
