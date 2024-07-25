@@ -1,3 +1,4 @@
+import logging
 import os
 
 from concurrent.futures import ThreadPoolExecutor
@@ -47,8 +48,8 @@ def main() -> None:
 
     try:
       process_file(args, processor, pdf_file_manager)
-    except Exception:
-      print(f'Failed to process "{pdf_file_manager.file_path}", continuing...')
+    except Exception as e:
+      logging.error(f'Failed to process "{pdf_file_manager.file_path}" due to {e}, continuing...', exc_info=True)
       continue
 
 
