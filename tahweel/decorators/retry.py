@@ -28,7 +28,7 @@ RETRY_ERRORS = {
 }
 
 
-def retry(retries: int = 5, delay: int = 1, backoff: int = 2) -> Callable:
+def retry(retries: int = 10, delay: int = 1, backoff: int = 2) -> Callable:
   def validate_params():
     if retries < 0:
       raise ValueError('`retries` must be greater than or equal to 0.')
