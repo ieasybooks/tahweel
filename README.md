@@ -99,6 +99,16 @@ tahweel "./pdfs/1.pdf" \
   --txt-page-separator PAGE_SEPARATOR
 ```
 
+<h4 dir="rtl">تحويل أكثر من ملف PDF ومجلد</h4>
+
+```bash
+tahweel "./pdfs/1.pdf" "./pdfs/2.pdf" "./other_pdfs" \
+  --service-account-credentials "./service_account_credentials.json" \
+  --pdf2image-thread-count 8 \
+  --processor-max-workers 8 \
+  --txt-page-separator PAGE_SEPARATOR
+```
+
 <h4 dir="rtl">تحويل مجلد كامل من الملفات</h4>
 
 ```bash
