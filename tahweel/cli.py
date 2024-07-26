@@ -10,6 +10,7 @@ from tqdm import tqdm
 
 from tahweel import TahweelArgumentParser
 from tahweel.enums import TahweelType, TransformationType
+from tahweel.enums.output_format_type import OutputFormatType
 from tahweel.managers import PdfFileManager
 from tahweel.models import Transformation
 from tahweel.processors import BaseOcrProcessor, GoogleDriveOcrProcessor, GoogleDriveOnColabOcrProcessor
@@ -102,12 +103,16 @@ def process_file(
 
   content = list(map(lambda text: apply_transformations(text, TRANSFORMATIONS), content))
 
-  TxtWriter(file_manager.txt_file_path(tahweel_type, args.dir_output_type, file_or_dir_path, args.output_dir)).write(
-    content,
-    args.txt_page_separator,
-  )
+  if OutputFormatType.TXT in args.output_formats:
+    TxtWriter(file_manager.txt_file_path(tahweel_type, args.dir_output_type, file_or_dir_path, args.output_dir)).write(
+      content,
+      args.txt_page_separator,
+    )
 
-  DocxWriter(file_manager.docx_file_path(tahweel_type, args.dir_output_type, file_or_dir_path, args.output_dir)).write(
-    content,
-    args.docx_remove_newlines,
-  )
+  if OutputFormatType.DOCX in args.output_formats:
+    DocxWriter(
+      file_manager.docx_file_path(tahweel_type, args.dir_output_type, file_or_dir_path, args.output_dir)
+    ).write(
+      content,
+      args.docx_remove_newlines,
+    )

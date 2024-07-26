@@ -4,7 +4,7 @@ from pathlib import Path
 
 from tap import Tap
 
-from tahweel.enums import DirOutputType
+from tahweel.enums import DirOutputType, OutputFormatType
 
 
 class TahweelArgumentParser(Tap):
@@ -27,6 +27,8 @@ class TahweelArgumentParser(Tap):
   docx_remove_newlines: bool = False
   """Remove newlines from the output DOCX file. Useful if you want DOCX and PDF to have the same page count."""
 
+  output_formats: list[OutputFormatType] = [OutputFormatType.TXT, OutputFormatType.DOCX]
+
   output_dir: Path | None = None
   """Path to the output directory. This overrides the default output directory behavior."""
 
@@ -44,6 +46,15 @@ class TahweelArgumentParser(Tap):
       help='Use this argument when processing a directory. '
       '`tree_to_tree` means the output will be in a new directory beside the input directory with the same structure, '
       'while `side_by_side` means the output will be in the same input directory beside each file.',
+    )
+
+    self.add_argument(
+      '--output-formats',
+      nargs='+',
+      type=OutputFormatType,
+      default=[OutputFormatType.TXT, OutputFormatType.DOCX],
+      choices=list(OutputFormatType),
+      help='Format of the output files; if not specified, `txt` and `docx` formats will be produced.',
     )
 
     self.add_argument(
