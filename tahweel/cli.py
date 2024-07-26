@@ -35,13 +35,16 @@ def main() -> None:
   else:
     processor = GoogleDriveOcrProcessor(args.service_account_credentials)
 
-  prepare_package_dirs()
+  prepare_package_dirs(args)
 
   for file_or_dir_path in tqdm(args.files_or_dirs_paths, desc='Paths'):
     process_path(args, processor, file_or_dir_path)
 
 
-def prepare_package_dirs() -> None:
+def prepare_package_dirs(args: TahweelArgumentParser) -> None:
+  if args.output_dir is not None:
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+
   Path(platformdirs.user_cache_dir('Tahweel')).mkdir(parents=True, exist_ok=True)
 
 
@@ -78,7 +81,12 @@ def process_file(
   file_or_dir_path: Path,
   tahweel_type: TahweelType,
 ) -> None:
-  if not args.skip_output_check and file_manager.output_exists(tahweel_type, args.dir_output_type, file_or_dir_path):
+  if not args.skip_output_check and file_manager.output_exists(
+    tahweel_type,
+    args.dir_output_type,
+    file_or_dir_path,
+    args.output_dir,
+  ):
     return
 
   file_manager.to_images()
@@ -94,12 +102,12 @@ def process_file(
 
   content = list(map(lambda text: apply_transformations(text, TRANSFORMATIONS), content))
 
-  TxtWriter(file_manager.txt_file_path(tahweel_type, args.dir_output_type, file_or_dir_path)).write(
+  TxtWriter(file_manager.txt_file_path(tahweel_type, args.dir_output_type, file_or_dir_path, args.output_dir)).write(
     content,
     args.txt_page_separator,
   )
 
-  DocxWriter(file_manager.docx_file_path(tahweel_type, args.dir_output_type, file_or_dir_path)).write(
+  DocxWriter(file_manager.docx_file_path(tahweel_type, args.dir_output_type, file_or_dir_path, args.output_dir)).write(
     content,
     args.docx_remove_newlines,
   )

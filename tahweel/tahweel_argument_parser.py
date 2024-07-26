@@ -27,6 +27,9 @@ class TahweelArgumentParser(Tap):
   docx_remove_newlines: bool = False
   """Remove newlines from the output DOCX file. Useful if you want DOCX and PDF to have the same page count."""
 
+  output_dir: Path | None = None
+  """Path to the output directory. This overrides the default output directory behavior."""
+
   skip_output_check: bool = False
   """Use this flag in development only to skip the output check."""
 
