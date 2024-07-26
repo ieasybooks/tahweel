@@ -50,7 +50,7 @@
 <h3 dir="rtl">الخيارات المتوفرة</h3>
 
 <ul dir="rtl">
-  <li>مسار ملف PDF أو مجلد يحتوي على أكثر من ملف PDF: يجب تمرير مسار الملف أو المجلد بعد اسم أداة تحويل بشكل مباشر. على سبيل المثال: <code dir="ltr">tahweel "./pdfs"</code></li>
+  <li>مسارات ملفات PDF أو مجلدات تحتوي على أكثر من ملف PDF: يجب تمرير مسارات الملفات أو المجلدات بعد اسم أداة تحويل بشكل مباشر. على سبيل المثال: <code dir="ltr">tahweel "./pdfs"</code></li>
   <li>ملف Service Account Credentials: يجب تمرير مسار ملف <code>JSON</code> الخاص بك من Google Cloud Platform إلى الاختيار <code dir="ltr">--service-account-credentials</code></li>
   <li>عدد عمليات تحويل ملف PDF إلى صور: يمكن تحديد العدد من خلال الاختيار <code dir="ltr">--pdf2image-thread-count</code>. حسب قوة حاسبك يمكن تقليل أو زيادة هذه القيمة. القيمة الافتراضية هي <code dir="ltr">8</code></li>
   <li>عدد عمليات تحويل الصور إلى نص: يمكن تحديد العدد من خلال الاختيار <code dir="ltr">--processor-max-workers</code>. حسب جودة اتصال الانترنت لديك يمكن تقليل أو زيادة هذه القيمة. القيمة الافتراضية هي <code dir="ltr">8</code></li>
@@ -62,11 +62,11 @@
 ```
 ➜ tahweel --help
 usage: tahweel --service-account-credentials SERVICE_ACCOUNT_CREDENTIALS [--pdf2image-thread-count PDF2IMAGE_THREAD_COUNT] [--processor-max-workers PROCESSOR_MAX_WORKERS]
-               [--dir-output-type {tree_to_tree,side_by_side}] [--txt-page-separator TXT_PAGE_SEPARATOR] [--docx-remove-newlines] [--skip-output-check] [--tahweel-type {file,dir}] [-h] [--version]
-               file_or_dir_path
+               [--dir-output-type {tree_to_tree,side_by_side}] [--txt-page-separator TXT_PAGE_SEPARATOR] [--docx-remove-newlines] [--skip-output-check] [-h] [--version]
+               files_or_dirs_paths [files_or_dirs_paths ...]
 
 positional arguments:
-  file_or_dir_path      Path to the file or directory to be processed.
+  files_or_dirs_paths   Path to the file or directory to be processed.
 
 options:
   --service-account-credentials SERVICE_ACCOUNT_CREDENTIALS
@@ -83,8 +83,6 @@ options:
   --docx-remove-newlines
                         (bool, default=False) Remove newlines from the output DOCX file. Useful if you want DOCX and PDF to have the same page count.
   --skip-output-check   (bool, default=False) Use this flag in development only to skip the output check.
-  --tahweel-type {file,dir}
-                        Don't use this argument, it will be auto-set based on `file_or_dir_path`.
   -h, --help            show this help message and exit
   --version             show program's version number and exit
 ```

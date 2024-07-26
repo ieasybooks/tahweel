@@ -4,11 +4,11 @@ from pathlib import Path
 
 from tap import Tap
 
-from tahweel.enums import DirOutputType, TahweelType
+from tahweel.enums import DirOutputType
 
 
 class TahweelArgumentParser(Tap):
-  file_or_dir_path: Path
+  files_or_dirs_paths: list[Path]
 
   service_account_credentials: Path
   """Path to the service account credentials JSON file."""
@@ -30,10 +30,8 @@ class TahweelArgumentParser(Tap):
   skip_output_check: bool = False
   """Use this flag in development only to skip the output check."""
 
-  tahweel_type: TahweelType = TahweelType.FILE
-
   def configure(self):
-    self.add_argument('file_or_dir_path', type=Path, help='Path to the file or directory to be processed.')
+    self.add_argument('files_or_dirs_paths', nargs='+', help='Path to the file or directory to be processed.')
 
     self.add_argument(
       '--dir-output-type',
@@ -46,19 +44,8 @@ class TahweelArgumentParser(Tap):
     )
 
     self.add_argument(
-      '--tahweel-type',
-      type=TahweelType,
-      default=TahweelType.FILE,
-      choices=list(TahweelType),
-      help="Don't use this argument, it will be auto-set based on `file_or_dir_path`.",
-    )
-
-    self.add_argument(
       '--version',
       action='version',
       version=importlib.metadata.version('tahweel'),
       help="show program's version number and exit",
     )
-
-  def process_args(self):
-    self.tahweel_type = TahweelType.FILE if self.file_or_dir_path.is_file() else TahweelType.DIR
