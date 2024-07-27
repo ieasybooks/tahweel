@@ -3,7 +3,7 @@ name: Docker
 on:
   workflow_dispatch:
     inputs:
-      tagInput:
+      tag:
         description: 'Tag'
         required: true
 
@@ -34,12 +34,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Determine version tag
         id: version-tag
-        run: |
-          if [ -n "${{ github.event.inputs.tagInput }}" ]; then
-            echo "tag=${{ github.event.inputs.tagInput }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "tag=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
-          fi
+        run: echo "tag=${{ github.event.inputs.tag || inputs.tag }}" >> "$GITHUB_OUTPUT"
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
