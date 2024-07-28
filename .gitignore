@@ -1,3 +1,8 @@
+.github/data/*.txt
+.github/data/*.docx
+.github/*TXT
+.github/*DOCX
+
 # Created by https://www.toptal.com/developers/gitignore/api/linux,macos,dotenv,python,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=linux,macos,dotenv,python,windows
 
