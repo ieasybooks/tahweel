@@ -19,3 +19,7 @@ def compress_image(image_path: Path, max_size_mb: int = 5, initial_quality: int 
     return True
   else:
     return False
+
+
+def supported_image_formats() -> list[str]:
+  return [extension for extension, file_type in Image.registered_extensions().items() if file_type in Image.OPEN]
