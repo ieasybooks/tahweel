@@ -1,8 +1,8 @@
-import shutil
-
 from pathlib import Path
 
 import platformdirs
+
+from PIL import Image
 
 from tahweel.managers import BaseFileManager
 from tahweel.utils.image_utils import compress_image
@@ -16,9 +16,10 @@ class ImageFileManager(BaseFileManager):
     return 1
 
   def to_images(self) -> None:
-    self.images_paths.append(Path(platformdirs.user_cache_dir('Tahweel')) / self.file_path.name)
+    self.images_paths.append((Path(platformdirs.user_cache_dir('Tahweel')) / self.file_path.name).with_suffix('.jpg'))
 
-    shutil.copy(self.file_path, self.images_paths[0])
+    with Image.open(self.file_path) as image:
+      image.convert('RGB').save(self.images_paths[0])
 
     for path in self.images_paths:
       compress_image(path)
