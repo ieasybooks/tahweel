@@ -29,7 +29,6 @@
   <li>إنشاء Service Account Credentials من Google Cloud Platform كما هو موضّح <a href="https://developers.google.com/workspace/guides/create-credentials">هنا</a></li>
   <li>تثبيت لغة Python بإصدار 3.10 أو أعلى على حاسبك</li>
   <li>تثبيت مكتبة <code>poppler-utils</code> على نظام تشغيلك</li>
-  <li>في حال تحويل ملفات تحتوي على صفحات بحجم أكبر من <code dir=ltr>5MB</code> يجب تثبيت مكتبة <code>bc</code> ومكتبة <code>imagemagick</code> على نظام تشغيلك</li>
 </ul>
 
 <h2 dir="rtl">تثبيت تحويل</h2>
