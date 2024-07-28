@@ -34,15 +34,15 @@ jobs:
           name: "service_account_credentials.json"
           json: ${{ secrets.SERVICE_ACCOUNT_CREDENTIALS }}
 
-      - name: Test Tahweel on 1 page file
+      - name: Test Tahweel on 1 page PDF file
         run: |
           poetry run tahweel ".github/data/test-case-1-page.pdf" --service-account-credentials service_account_credentials.json
           test -f ".github/data/test-case-1-page.txt" || exit 1
           test -f ".github/data/test-case-1-page.docx" || exit 1
           grep -q "^بسم الله الرحمن الرحيم$" ".github/data/test-case-1-page.txt" || exit 1
-          rm -f ".github/data/test-case-1-page.txt" ".github/data/test-case-1-page.docx"
+          rm -f .github/data/*.txt .github/data/*.docx
 
-      - name: Test Tahweel on 3 pages file
+      - name: Test Tahweel on 3 pages PDF file
         run: |
           poetry run tahweel ".github/data/test-case-3-pages.pdf" --service-account-credentials service_account_credentials.json
           test -f ".github/data/test-case-3-pages.txt" || exit 1
@@ -50,16 +50,16 @@ jobs:
           grep -o "PAGE_SEPARATOR" ".github/data/test-case-3-pages.txt" | wc -l | grep -q "^2$" || exit 1
           head -n 1 ".github/data/test-case-3-pages.txt" | grep -q "^بسم الله الرحمن الرحيم$" || exit 1
           tail -n 1 ".github/data/test-case-3-pages.txt" | grep -q "^والصلاة والسلام على أشرف الأنبياء والمرسلين$" || exit 1
-          rm -f ".github/data/test-case-3-pages.txt" ".github/data/test-case-3-pages.docx"
+          rm -f .github/data/*.txt .github/data/*.docx
 
-      - name: Test Tahweel on multiple files
+      - name: Test Tahweel on multiple PDF files
         run: |
           poetry run tahweel ".github/data/test-case-1-page.pdf" ".github/data/test-case-3-pages.pdf" --service-account-credentials service_account_credentials.json
           test -f ".github/data/test-case-1-page.txt" || exit 1
           test -f ".github/data/test-case-1-page.docx" || exit 1
           test -f ".github/data/test-case-3-pages.txt" || exit 1
           test -f ".github/data/test-case-3-pages.docx" || exit 1
-          rm -f ".github/data/test-case-1-page.txt" ".github/data/test-case-1-page.docx" ".github/data/test-case-3-pages.txt" ".github/data/test-case-3-pages.docx"
+          rm -f .github/data/*.txt .github/data/*.docx
 
       - name: Test Tahweel on a directory with --dir-output-type tree_to_tree
         run: |
@@ -70,6 +70,8 @@ jobs:
           test -f ".github/data - Tahweel DOCX/test-case-3-pages.docx" || exit 1
           test -f ".github/data - Tahweel TXT/test-case-multilines.txt" || exit 1
           test -f ".github/data - Tahweel DOCX/test-case-multilines.docx" || exit 1
+          test -f ".github/data - Tahweel TXT/test-case.txt" || exit 1
+          test -f ".github/data - Tahweel DOCX/test-case.docx" || exit 1
           rm -rf ".github/data - Tahweel TXT" ".github/data - Tahweel DOCX"
 
       - name: Test Tahweel on a directory with --dir-output-type side_by_side
@@ -81,37 +83,39 @@ jobs:
           test -f ".github/data/test-case-3-pages.docx" || exit 1
           test -f ".github/data/test-case-multilines.txt" || exit 1
           test -f ".github/data/test-case-multilines.docx" || exit 1
-          rm -rf ".github/data/test-case-1-page.txt" ".github/data/test-case-1-page.docx" ".github/data/test-case-3-pages.txt" ".github/data/test-case-3-pages.docx" ".github/data/test-case-multilines.txt" ".github/data/test-case-multilines.docx"
+          test -f ".github/data/test-case.txt" || exit 1
+          test -f ".github/data/test-case.docx" || exit 1
+          rm -f .github/data/*.txt .github/data/*.docx
 
-      - name: Test Tahweel on 3 pages file with --txt-page-separator ANYTHING
+      - name: Test Tahweel on 3 pages PDF file with --txt-page-separator ANYTHING
         run: |
           poetry run tahweel ".github/data/test-case-3-pages.pdf" --service-account-credentials service_account_credentials.json --txt-page-separator ANYTHING
           test -f ".github/data/test-case-3-pages.txt" || exit 1
           test -f ".github/data/test-case-3-pages.docx" || exit 1
           grep -o "ANYTHING" ".github/data/test-case-3-pages.txt" | wc -l | grep -q "^2$" || exit 1
-          rm -f ".github/data/test-case-3-pages.txt" ".github/data/test-case-3-pages.docx"
+          rm -f .github/data/*.txt .github/data/*.docx
 
-      - name: Test Tahweel on multilines file with --docx-remove-newlines
+      - name: Test Tahweel on multilines PDF file with --docx-remove-newlines
         run: |
           poetry run tahweel ".github/data/test-case-multilines.pdf" --service-account-credentials service_account_credentials.json --docx-remove-newlines
           test -f ".github/data/test-case-multilines.txt" || exit 1
           test -f ".github/data/test-case-multilines.docx" || exit 1
-          docx2txt .github/data/test-case-multilines.docx - | grep -q "^بسم  الله الرحمن الرحيم  والصلاة والسلام على أشرف الأنبياء والمرسلين$" || exit 1
-          rm -f ".github/data/test-case-multilines.txt" ".github/data/test-case-multilines.docx"
+          docx2txt ".github/data/test-case-multilines.docx" - | grep -q "^بسم  الله الرحمن الرحيم  والصلاة والسلام على أشرف الأنبياء والمرسلين$" || exit 1
+          rm -f .github/data/*.txt .github/data/*.docx
 
-      - name: Test Tahweel on 1 page file with --output-formats txt
+      - name: Test Tahweel on 1 page PDF file with --output-formats txt
         run: |
           poetry run tahweel ".github/data/test-case-1-page.pdf" --service-account-credentials service_account_credentials.json --output-formats txt
           test -f ".github/data/test-case-1-page.txt" || exit 1
           test ! -f ".github/data/test-case-1-page.docx" || exit 1
-          rm -f ".github/data/test-case-1-page.txt"
+          rm -f .github/data/*.txt .github/data/*.docx
 
-      - name: Test Tahweel on 1 page file with --output-dir ".github/custom-output-dir"
+      - name: Test Tahweel on 1 page PDF file with --output-dir ".github/custom-output-dir"
         run: |
           poetry run tahweel ".github/data/test-case-1-page.pdf" --service-account-credentials service_account_credentials.json --output-dir ".github/custom-output-dir"
           test -f ".github/custom-output-dir/test-case-1-page.txt" || exit 1
           test -f ".github/custom-output-dir/test-case-1-page.docx" || exit 1
-          rm -f ".github/custom-output-dir/test-case-1-page.txt" ".github/custom-output-dir/test-case-1-page.docx"
+          rm -rf .github/custom-output-dir
 
       - name: Test Tahweel on a directory with --dir-output-type tree_to_tree --output-dir ".github/custom-output-dir"
         run: |
@@ -120,7 +124,11 @@ jobs:
           test -f ".github/custom-output-dir/Tahweel DOCX/test-case-1-page.docx" || exit 1
           test -f ".github/custom-output-dir/Tahweel TXT/test-case-3-pages.txt" || exit 1
           test -f ".github/custom-output-dir/Tahweel DOCX/test-case-3-pages.docx" || exit 1
-          rm -rf ".github/custom-output-dir"
+          test -f ".github/custom-output-dir/Tahweel TXT/test-case-multilines.txt" || exit 1
+          test -f ".github/custom-output-dir/Tahweel DOCX/test-case-multilines.docx" || exit 1
+          test -f ".github/custom-output-dir/Tahweel TXT/test-case.txt" || exit 1
+          test -f ".github/custom-output-dir/Tahweel DOCX/test-case.docx" || exit 1
+          rm -rf .github/custom-output-dir
 
       - name: Test Tahweel on a directory with --dir-output-type side_by_side --output-dir ".github/custom-output-dir"
         run: |
@@ -129,4 +137,15 @@ jobs:
           test -f ".github/custom-output-dir/test-case-1-page.docx" || exit 1
           test -f ".github/custom-output-dir/test-case-3-pages.txt" || exit 1
           test -f ".github/custom-output-dir/test-case-3-pages.docx" || exit 1
-          rm -rf ".github/custom-output-dir"
+          test -f ".github/custom-output-dir/test-case-multilines.txt" || exit 1
+          test -f ".github/custom-output-dir/test-case-multilines.docx" || exit 1
+          test -f ".github/custom-output-dir/test-case.txt" || exit 1
+          test -f ".github/custom-output-dir/test-case.docx" || exit 1
+          rm -rf .github/custom-output-dir
+
+      - name: Test Tahweel on an image file
+        run: |
+          poetry run tahweel ".github/data/test-case.jpg" --service-account-credentials service_account_credentials.json
+          test -f ".github/data/test-case.txt" || exit 1
+          test -f ".github/data/test-case.docx" || exit 1
+          rm -f .github/data/*.txt .github/data/*.docx
