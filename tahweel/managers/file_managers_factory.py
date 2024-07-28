@@ -20,8 +20,8 @@ class FileManagersFactory:
   @classmethod
   def _is_valid_image(cls, file_name: Path) -> bool:
     try:
-      with Image.open(file_name) as img:
-        img.verify()
+      with Image.open(file_name) as image:
+        image.verify()
 
       return True
     except Exception:
