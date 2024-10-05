@@ -39,7 +39,7 @@ pillow = "^10.4.0"
 tahweel = "tahweel.cli:main"
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^3.7.1"
+pre-commit = "^4.0.0"
 ruff = "^0.5.5"
 
 [tool.ruff]
