@@ -33,7 +33,7 @@ platformdirs = "^4.2.2"
 tqdm = "^4.66.4"
 google-api-python-client-stubs = "^1.26.0"
 python-docx = "^1.1.2"
-pillow = "^10.4.0"
+pillow = "^11.0.0"
 
 [tool.poetry.scripts]
 tahweel = "tahweel.cli:main"
