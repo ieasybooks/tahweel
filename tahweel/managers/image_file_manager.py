@@ -16,7 +16,9 @@ class ImageFileManager(BaseFileManager):
     return 1
 
   def to_images(self) -> None:
-    self.images_paths.append((Path(platformdirs.user_cache_dir('Tahweel')) / self.file_path.name).with_suffix('.jpg'))
+    user_cache_dir = Path(platformdirs.user_cache_dir('Tahweel', ensure_exists=True))
+
+    self.images_paths.append((user_cache_dir / self.file_path.name).with_suffix('.jpg'))
 
     with Image.open(self.file_path) as image:
       image.convert('RGB').save(self.images_paths[0])

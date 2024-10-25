@@ -22,7 +22,7 @@ class PdfFileManager(BaseFileManager):
         lambda path: Path(path),
         pdf2image.convert_from_path(
           self.file_path,
-          output_folder=platformdirs.user_cache_dir('Tahweel'),
+          output_folder=platformdirs.user_cache_dir('Tahweel', ensure_exists=True),
           fmt='jpeg',
           jpegopt={'quality': 100, 'progressive': True, 'optimize': True},
           thread_count=self.pdf2image_thread_count,
