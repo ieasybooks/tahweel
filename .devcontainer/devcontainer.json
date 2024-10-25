@@ -2,7 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/python
 {
 	"name": "Tahweel",
-	"image": "mcr.microsoft.com/devcontainers/python:3.12",
+	"image": "mcr.microsoft.com/devcontainers/python:3.13",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
