@@ -222,13 +222,13 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2,<1.0.dev0)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.149.0"
+version = "2.159.0"
 description = "Google API Client Library for Python"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google_api_python_client-2.149.0-py2.py3-none-any.whl", hash = "sha256:1a5232e9cfed8c201799d9327e4d44dc7ea7daa3c6e1627fca41aa201539c0da"},
-    {file = "google_api_python_client-2.149.0.tar.gz", hash = "sha256:b9d68c6b14ec72580d66001bd33c5816b78e2134b93ccc5cf8f624516b561750"},
+    {file = "google_api_python_client-2.159.0-py2.py3-none-any.whl", hash = "sha256:baef0bb631a60a0bd7c0bf12a5499e3a40cd4388484de7ee55c1950bf820a0cf"},
+    {file = "google_api_python_client-2.159.0.tar.gz", hash = "sha256:55197f430f25c907394b44fa078545ffef89d33fd4dca501b7db9f0d8e224bd6"},
 ]
 
 [package.dependencies]
@@ -240,17 +240,17 @@ uritemplate = ">=3.0.1,<5"
 
 [[package]]
 name = "google-api-python-client-stubs"
-version = "1.28.0"
+version = "1.29.0"
 description = "Type stubs for google-api-python-client"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google_api_python_client_stubs-1.28.0-py3-none-any.whl", hash = "sha256:75b3dfe67b9d74ac3b58d78725326836769d0b2df1cbef354a5455a5cc57d68d"},
-    {file = "google_api_python_client_stubs-1.28.0.tar.gz", hash = "sha256:7327c058fb5ba975309922f962f17931b9c82af51d95a5dc04061ed0c20b9f06"},
+    {file = "google_api_python_client_stubs-1.29.0-py3-none-any.whl", hash = "sha256:e874eda842dec69781e4bf4e151b47f6e57cc419ff2c0d1e4719ff8dc3a559fc"},
+    {file = "google_api_python_client_stubs-1.29.0.tar.gz", hash = "sha256:ef88272accb67b92e512e41d04b73651da183c0eabb6028d71b4633e23a9e47e"},
 ]
 
 [package.dependencies]
-google-api-python-client = ">=2.147.0"
+google-api-python-client = ">=2.159.0"
 types-httplib2 = ">=0.22.0.2"
 typing-extensions = ">=3.10.0"
 
