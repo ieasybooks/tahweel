@@ -14,12 +14,12 @@ class PdfFileManager(BaseFileManager):
     self.pdf2image_thread_count = pdf2image_thread_count
 
   def pages_count(self) -> int:
-    return pdf2image.pdfinfo_from_path(self.file_path)['Pages']
+    return pdf2image.pdfinfo_from_path(str(self.file_path))['Pages']
 
   def to_images(self) -> None:
     self.images_paths.extend(
       map(
-        lambda path: Path(path),
+        lambda path: Path(str(path)),
         pdf2image.convert_from_path(
           self.file_path,
           output_folder=platformdirs.user_cache_dir('Tahweel', ensure_exists=True),

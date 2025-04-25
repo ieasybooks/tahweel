@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import cast
 
 from tahweel.enums import DirOutputType, TahweelType
 
@@ -25,46 +24,46 @@ class BaseFileManager(ABC):
   def output_exists(
     self,
     tahweel_type: TahweelType,
-    dir_output_type: DirOutputType | None = None,
-    dir: Path | None = None,
+    dir: Path,
+    dir_output_type: DirOutputType,
     output_dir: Path | None = None,
   ) -> bool:
     return (
-      self.txt_file_path(tahweel_type, dir_output_type, dir, output_dir).exists()
-      and self.docx_file_path(tahweel_type, dir_output_type, dir, output_dir).exists()
+      self.txt_file_path(tahweel_type, dir, dir_output_type, output_dir).exists()
+      and self.docx_file_path(tahweel_type, dir, dir_output_type, output_dir).exists()
     )
 
   def txt_file_path(
     self,
     tahweel_type: TahweelType,
-    dir_output_type: DirOutputType | None = None,
-    dir: Path | None = None,
+    dir: Path,
+    dir_output_type: DirOutputType,
     output_dir: Path | None = None,
   ) -> Path:
-    return self._output_file_path('.txt', tahweel_type, dir_output_type, dir, output_dir)
+    return self._output_file_path('.txt', tahweel_type, dir, dir_output_type, output_dir)
 
   def docx_file_path(
     self,
     tahweel_type: TahweelType,
-    dir_output_type: DirOutputType | None = None,
-    dir: Path | None = None,
+    dir: Path,
+    dir_output_type: DirOutputType,
     output_dir: Path | None = None,
   ) -> Path:
-    return self._output_file_path('.docx', tahweel_type, dir_output_type, dir, output_dir)
+    return self._output_file_path('.docx', tahweel_type, dir, dir_output_type, output_dir)
 
   def _output_file_path(
     self,
     suffix: str,
     tahweel_type: TahweelType,
-    dir_output_type: DirOutputType | None = None,
-    dir: Path | None = None,
+    dir: Path,
+    dir_output_type: DirOutputType,
     output_dir: Path | None = None,
   ) -> Path:
     match tahweel_type:
       case TahweelType.FILE:
         return self._file_output_path(suffix, output_dir)
       case TahweelType.DIR:
-        return self._dir_output_path(suffix, cast(DirOutputType, dir_output_type), cast(Path, dir), output_dir)
+        return self._dir_output_path(suffix, dir, dir_output_type, output_dir)
 
   def _file_output_path(self, suffix: str, output_dir: Path | None) -> Path:
     if output_dir is not None:
@@ -72,7 +71,7 @@ class BaseFileManager(ABC):
 
     return self.file_path.with_suffix(suffix)
 
-  def _dir_output_path(self, suffix: str, dir_output_type: DirOutputType, dir: Path, output_dir: Path | None) -> Path:
+  def _dir_output_path(self, suffix: str, dir: Path, dir_output_type: DirOutputType, output_dir: Path | None) -> Path:
     match dir_output_type:
       case DirOutputType.SIDE_BY_SIDE:
         return self._side_by_side_output_path(suffix, dir, output_dir)

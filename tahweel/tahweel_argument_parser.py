@@ -13,6 +13,9 @@ class TahweelArgumentParser(Tap):
   service_account_credentials: list[Path]
   """Paths to the service account credentials JSON files. Multiple credentials will enable parallel processing."""
 
+  file_extensions: list[str] | None = None
+  """Custom file extensions to search for (e.g., '.pdf', '.jpg'). If not provided, defaults to PDF and supported image formats."""
+
   pdf2image_thread_count: int = 8
   """Number of threads to use for PDF to image conversion using `pdf2image` package."""
 
@@ -44,6 +47,14 @@ class TahweelArgumentParser(Tap):
       type=Path,
       required=True,
       help='Paths to the service account credentials JSON files. Multiple credentials will enable parallel processing.',
+    )
+
+    self.add_argument(
+      '--file-extensions',
+      nargs='+',
+      type=str,
+      default=None,
+      help='Custom file extensions to search for (e.g., .pdf, .jpg). If not provided, defaults to PDF and supported image formats.',
     )
 
     self.add_argument(
