@@ -10,8 +10,8 @@ from tahweel.enums import DirOutputType, OutputFormatType
 class TahweelArgumentParser(Tap):
   files_or_dirs_paths: list[Path]
 
-  service_account_credentials: Path
-  """Path to the service account credentials JSON file."""
+  service_account_credentials: list[Path]
+  """Paths to the service account credentials JSON files. Multiple credentials will enable parallel processing."""
 
   pdf2image_thread_count: int = 8
   """Number of threads to use for PDF to image conversion using `pdf2image` package."""
@@ -37,6 +37,14 @@ class TahweelArgumentParser(Tap):
 
   def configure(self):
     self.add_argument('files_or_dirs_paths', nargs='+', help='Path to the file or directory to be processed.')
+
+    self.add_argument(
+      '--service-account-credentials',
+      nargs='+',
+      type=Path,
+      required=True,
+      help='Paths to the service account credentials JSON files. Multiple credentials will enable parallel processing.',
+    )
 
     self.add_argument(
       '--dir-output-type',

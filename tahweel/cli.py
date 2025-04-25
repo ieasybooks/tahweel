@@ -3,6 +3,7 @@ import os
 
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from typing import List, Optional, Tuple, Union
 
 import platformdirs
 
@@ -31,16 +32,34 @@ TRANSFORMATIONS = [
 def main() -> None:
   args = TahweelArgumentParser(underscores_to_dashes=True).parse_args()
 
-  processor: BaseOcrProcessor
+  processors: List[BaseOcrProcessor] = []
   if IS_COLAB:
-    processor = GoogleDriveOnColabOcrProcessor()
+    processors = [GoogleDriveOnColabOcrProcessor()]
   else:
-    processor = GoogleDriveOcrProcessor(args.service_account_credentials)
+    processors = [GoogleDriveOcrProcessor(cred) for cred in args.service_account_credentials]
 
   prepare_package_dirs(args)
+  files_to_process = get_files_to_process(args)
 
-  for file_or_dir_path in tqdm(args.files_or_dirs_paths, desc='Paths'):
-    process_path(args, processor, file_or_dir_path)
+  with ThreadPoolExecutor(max_workers=len(processors)) as executor:
+    futures = []
+
+    for index, file_to_process in enumerate(files_to_process):
+      processor = processors[index % len(processors)]
+
+      if len(file_to_process) == 2:
+        dir_path = None
+        file_path, tahweel_type = file_to_process
+      else:
+        file_path, dir_path, tahweel_type = file_to_process
+
+      futures.append(executor.submit(process_file_with_processor, args, processor, file_path, tahweel_type, dir_path))
+
+    for future in tqdm(futures, desc='Processing files'):
+      try:
+        future.result()
+      except Exception as e:
+        logging.error(f'Error processing file: {e}', exc_info=True)
 
 
 def prepare_package_dirs(args: TahweelArgumentParser) -> None:
@@ -50,41 +69,47 @@ def prepare_package_dirs(args: TahweelArgumentParser) -> None:
   Path(platformdirs.user_cache_dir('Tahweel')).mkdir(parents=True, exist_ok=True)
 
 
-def process_path(args: TahweelArgumentParser, processor: BaseOcrProcessor, file_or_dir_path: Path) -> None:
-  if file_or_dir_path.is_file():
-    process_single_file(args, processor, file_or_dir_path)
-  else:
-    process_directory(args, processor, file_or_dir_path)
+def get_files_to_process(
+  args: TahweelArgumentParser,
+) -> List[Union[Tuple[Path, TahweelType], Tuple[Path, Path, TahweelType]]]:
+  supported_extensions = supported_image_formats() + ['.pdf']
+
+  files_to_process: List[Union[Tuple[Path, TahweelType], Tuple[Path, Path, TahweelType]]] = []
+
+  for file_or_dir_path in args.files_or_dirs_paths:
+    if file_or_dir_path.is_file():
+      files_to_process.append((file_or_dir_path, TahweelType.FILE))
+    else:
+      files_to_process.extend(
+        [
+          (path, file_or_dir_path, TahweelType.DIR)
+          for extension in supported_extensions
+          for path in file_or_dir_path.rglob(f'*{extension}')
+        ]
+      )
+
+  return files_to_process
 
 
-def process_single_file(args: TahweelArgumentParser, processor: BaseOcrProcessor, file_path: Path) -> None:
+def process_file_with_processor(
+  args: TahweelArgumentParser,
+  processor: BaseOcrProcessor,
+  file_path: Path,
+  tahweel_type: TahweelType,
+  dir_path: Optional[Path] = None,
+) -> None:
+  """Process a single file with the given processor."""
   try:
+    reference_path = dir_path if dir_path is not None else file_path
     process_file(
       args,
       processor,
       FileManagersFactory.from_file_path(file_path, args.pdf2image_thread_count),
-      file_path,
-      TahweelType.FILE,
+      reference_path,
+      tahweel_type,
     )
   except Exception as e:
     logging.error(f'Failed to process "{file_path}" due to {e}, continuing...', exc_info=True)
-
-
-def process_directory(args: TahweelArgumentParser, processor: BaseOcrProcessor, dir_path: Path) -> None:
-  supported_extensions = supported_image_formats() + ['.pdf']
-  file_paths = [path for ext in supported_extensions for path in dir_path.rglob(f'*{ext}')]
-
-  for file_path in tqdm(file_paths, desc=f'Files ({truncate(str(dir_path), 50, from_end=True)})'):
-    try:
-      process_file(
-        args,
-        processor,
-        FileManagersFactory.from_file_path(file_path, args.pdf2image_thread_count),
-        dir_path,
-        TahweelType.DIR,
-      )
-    except Exception as e:
-      logging.error(f'Failed to process "{file_path}" due to {e}, continuing...', exc_info=True)
 
 
 def process_file(

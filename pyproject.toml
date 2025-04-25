@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tahweel"
-version = "0.1.0"
+version = "0.2.0"
 description = "تحويل ملفات PDF إلى Word و TXT"
 authors = ["EasyBooks <easybooksdev@gmail.com>"]
 license = "MIT"
@@ -34,6 +34,7 @@ tqdm = "^4.66.5"
 google-api-python-client-stubs = "^1.28.0"
 python-docx = "^1.1.2"
 pillow = "^11.0.0"
+types-tqdm = "^4.67.0.20250417"
 
 [tool.poetry.scripts]
 tahweel = "tahweel.cli:main"
