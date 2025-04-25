@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Callable, Optional
+from typing import Callable
 
 from tahweel.enums import TransformationType
 
@@ -8,4 +8,4 @@ from tahweel.enums import TransformationType
 class Transformation:
   transformation_type: TransformationType
   source: str | Callable
-  target: Optional[str] = None
+  target: str | None = None
