@@ -41,7 +41,7 @@ tahweel = "tahweel.cli:main"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^4.0.1"
-ruff = "^0.7.1"
+ruff = "^0.11.0"
 
 [tool.ruff]
 fix = true
