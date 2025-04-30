@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tahweel"
-version = "0.2.0"
+version = "0.1.0"
 description = "تحويل ملفات PDF إلى Word و TXT"
 authors = ["EasyBooks <easybooksdev@gmail.com>"]
 license = "MIT"
@@ -26,22 +26,21 @@ repository = "https://github.com/ieasybooks/tahweel"
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
 typed-argument-parser = "^1.10.1"
-google-api-python-client = "^2.168.0"
-google-auth-oauthlib = "^1.2.2"
+google-api-python-client = "^2.149.0"
+google-auth-oauthlib = "^1.2.1"
 pdf2image = "^1.17.0"
-platformdirs = "^4.3.7"
-tqdm = "^4.67.1"
-google-api-python-client-stubs = "^1.29.0"
+platformdirs = "^4.3.6"
+tqdm = "^4.66.5"
+google-api-python-client-stubs = "^1.28.0"
 python-docx = "^1.1.2"
-pillow = "^11.2.1"
-types-tqdm = "^4.67.0.20250417"
+pillow = "^11.0.0"
 
 [tool.poetry.scripts]
 tahweel = "tahweel.cli:main"
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^4.2.0"
-ruff = "^0.11.7"
+pre-commit = "^4.0.1"
+ruff = "^0.7.1"
 
 [tool.ruff]
 fix = true
