@@ -8,4 +8,4 @@ class TxtWriter:
     self.file_path.parent.mkdir(parents=True, exist_ok=True)
 
   def write(self, texts: list[str], page_separator: str) -> None:
-    self.file_path.write_text(f'\n{page_separator}\n'.join(texts))
+    self.file_path.write_text(f'\n{page_separator}\n'.join(texts), encoding="utf-8")
