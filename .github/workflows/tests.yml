@@ -17,7 +17,7 @@ jobs:
           sudo apt-get install -y poppler-utils docx2txt
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install Poetry
         uses: snok/install-poetry@v1
       - name: Setup Python
