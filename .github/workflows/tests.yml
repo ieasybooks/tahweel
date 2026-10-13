@@ -29,7 +29,7 @@ jobs:
         run: poetry install
 
       - name: Write SERVICE_ACCOUNT_CREDENTIALS to service_account_credentials.json
-        uses: jsdaniell/create-json@v1.2.3
+        uses: jsdaniell/create-json@v1.2.4
         with:
           name: "service_account_credentials.json"
           json: ${{ secrets.SERVICE_ACCOUNT_CREDENTIALS }}
