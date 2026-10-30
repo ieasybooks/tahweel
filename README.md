@@ -1,3 +1,7 @@
+> **مؤرشف:** لم يعد هذا المستودع قيد الصيانة. الإصدار الجديد الذي تتم صيانته هو [tahweel-rs](https://github.com/ieasybooks/tahweel-rs).
+>
+> التوثيق أدناه يخص هذا الإصدار المؤرشف.
+
 <div align="center">
   <a href="https://pypi.org/project/tahweel" target="_blank"><img src="https://img.shields.io/pypi/v/tahweel?label=PyPI%20Version&color=limegreen" /></a>
   <a href="https://pypi.org/project/tahweel" target="_blank"><img src="https://img.shields.io/pypi/pyversions/tahweel?color=limegreen" /></a>
