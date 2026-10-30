@@ -1,3 +1,7 @@
+> **Archived:** This repository is no longer maintained. The new maintained version is [tahweel-rs](https://github.com/ieasybooks/tahweel-rs).
+>
+> The documentation below describes this archived implementation.
+
 <div align="center">
   <a href="https://pypi.org/project/tahweel" target="_blank"><img src="https://img.shields.io/pypi/v/tahweel?label=PyPI%20Version&color=limegreen" /></a>
   <a href="https://pypi.org/project/tahweel" target="_blank"><img src="https://img.shields.io/pypi/pyversions/tahweel?color=limegreen" /></a>
